@@ -11,6 +11,8 @@
 #   Galaxy server tokens follow the Ansible naming convention:
 #     ANSIBLE_GALAXY_SERVER_<ID>_TOKEN
 #   where <ID> matches the [galaxy_server.<id>] section in ansible.cfg.
+#   ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_PUBLISHED_TOKEN
+#   ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_VALIDATED_TOKEN
 #   AAP_EE_BUILDER_GITHUB_PUBLIC_NILASHISHC_TOKEN
 #   AAP_EE_BUILDER_GITHUB_PUBLIC_TEST_RHAAP_PORTAL
 #   REGISTRY_USERNAME/PASSWORD   - Container registry credentials
@@ -91,11 +93,28 @@ jobs:
       galaxy_tokens_configured: ${{ steps.check-galaxy.outputs.configured }}
       git_token_configured: ${{ steps.check-git-token.outputs.configured }}
     steps:
-      - name: No galaxy server tokens required
+      - name: Check if galaxy server tokens are configured
         id: check-galaxy
+        env:
+
+          ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_PUBLISHED_TOKEN: ${{ secrets.ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_PUBLISHED_TOKEN }}
+          ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_VALIDATED_TOKEN: ${{ secrets.ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_VALIDATED_TOKEN }}
         run: |
-          echo "configured=false" >> "$GITHUB_OUTPUT"
-          echo "::notice::No galaxy server tokens configured for this project"
+          CONFIGURED=false
+
+          if [[ -n "$ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_PUBLISHED_TOKEN" ]]; then
+            echo "::notice::ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_PUBLISHED_TOKEN is configured"
+            CONFIGURED=true
+          else
+            echo "::notice::No ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_PUBLISHED_TOKEN secret configured"
+          fi
+          if [[ -n "$ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_VALIDATED_TOKEN" ]]; then
+            echo "::notice::ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_VALIDATED_TOKEN is configured"
+            CONFIGURED=true
+          else
+            echo "::notice::No ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_VALIDATED_TOKEN secret configured"
+          fi
+          echo "configured=$CONFIGURED" >> "$GITHUB_OUTPUT"
 
       - name: Check if SCM tokens are configured
         id: check-git-token
@@ -252,6 +271,8 @@ jobs:
         id: build
         env:
 
+          ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_PUBLISHED_TOKEN: ${{ secrets.ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_PUBLISHED_TOKEN }}
+          ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_VALIDATED_TOKEN: ${{ secrets.ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_VALIDATED_TOKEN }}
           AAP_EE_BUILDER_GITHUB_PUBLIC_NILASHISHC_TOKEN: ${{ secrets.AAP_EE_BUILDER_GITHUB_PUBLIC_NILASHISHC_TOKEN }}
           AAP_EE_BUILDER_GITHUB_PUBLIC_TEST_RHAAP_PORTAL: ${{ secrets.AAP_EE_BUILDER_GITHUB_PUBLIC_TEST_RHAAP_PORTAL }}
           # Use the repo's ansible.cfg for host-side dependency resolution
@@ -292,6 +313,15 @@ jobs:
             EXTRA_ARGS+=(--volume "$(pwd)/${{ env.EE_DIR }}/ansible.cfg:/etc/ansible/ansible.cfg:ro")
           fi
 
+
+          # Pass non-empty tokens as build args. ARG values are available during
+          # RUN instructions but do not persist in the final image.
+          if [[ -n "$ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_PUBLISHED_TOKEN" ]]; then
+            EXTRA_ARGS+=(--build-arg ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_PUBLISHED_TOKEN)
+          fi
+          if [[ -n "$ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_VALIDATED_TOKEN" ]]; then
+            EXTRA_ARGS+=(--build-arg ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_VALIDATED_TOKEN)
+          fi
 
           buildah bud "${EXTRA_ARGS[@]}" \
             --tag "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:build-${{ github.sha }}" \

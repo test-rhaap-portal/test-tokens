@@ -1,0 +1,26 @@
+---
+version: 3
+
+images:
+  base_image:
+    name: registry.redhat.io/ansible-automation-platform/ee-minimal-rhel8:2.18
+
+dependencies:
+  python_interpreter:
+    python_path: /usr/bin/python3.11
+
+  galaxy:
+    collections:
+      - name: https://${AAP_EE_BUILDER_GITHUB_PUBLIC_NILASHISHC_TOKEN}@github.com/NilashishC/my_ns.my_col
+        type: git
+      - name: https://${AAP_EE_BUILDER_GITHUB_PUBLIC_TEST_RHAAP_PORTAL}@github.com/test-rhaap-portal/demo-collection
+        type: git
+      - name: hashicorp.terraform
+
+additional_build_steps:
+  prepend_galaxy:
+    - ARG ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_PUBLISHED_TOKEN
+    - ARG ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_VALIDATED_TOKEN
+
+options:
+  package_manager_path: /usr/bin/microdnf
