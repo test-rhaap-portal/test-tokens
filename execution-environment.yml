@@ -1,0 +1,19 @@
+---
+version: 3
+
+images:
+  base_image:
+    name: registry.redhat.io/ansible-automation-platform/ee-minimal-rhel8:2.18
+
+dependencies:
+  python_interpreter:
+    python_path: /usr/bin/python3.11
+
+  galaxy:
+    collections:
+      - name: https://${GITHUB_PUBLIC_NILASHISHC}@github.com/NilashishC/my_ns.my_col
+        type: git
+      - name: cisco.ios
+
+options:
+  package_manager_path: /usr/bin/microdnf
