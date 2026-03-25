@@ -13,6 +13,7 @@ These tokens authenticate `git clone` for private collection repositories.
 | Secret | Purpose |
 |--------|---------|
 | `AAP_EE_BUILDER_GITHUB_PUBLIC_NILASHISHC_TOKEN` | Git access for collections from `github.com` |
+| `AAP_EE_BUILDER_GITHUB_PUBLIC_TEST_RHAAP_PORTAL` | Git access for collections from `github.com` |
 
 ## Optional Secrets
 

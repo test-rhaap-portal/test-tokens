@@ -41,6 +41,7 @@ The included GitHub Actions workflow (`ee-build.yml`) provides:
 | Secret | Required | Description |
 |--------|----------|-------------|
 | `AAP_EE_BUILDER_GITHUB_PUBLIC_NILASHISHC_TOKEN` | Yes | Git access token for github.com |
+| `AAP_EE_BUILDER_GITHUB_PUBLIC_TEST_RHAAP_PORTAL` | Yes | Git access token for github.com |
 | `REGISTRY_USERNAME` | No | Container registry username (defaults to `github.actor`) |
 | `REGISTRY_PASSWORD` | No | Container registry password (defaults to `GITHUB_TOKEN`) |
 | `REDHAT_REGISTRY_PASSWORD` | No | Red Hat registry password (for pulling base images) |
