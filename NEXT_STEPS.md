@@ -12,7 +12,7 @@ These tokens authenticate `git clone` for private collection repositories.
 
 | Secret | Purpose |
 |--------|---------|
-| `GITHUB_PUBLIC_ANSIBLE_COLLECTIONS_TOKEN` | Git access for collections from `github.com` |
+| `AAP_EE_BUILDER_GITHUB_PUBLIC_NILASHISHC_TOKEN` | Git access for collections from `github.com` |
 
 ## Optional Secrets
 

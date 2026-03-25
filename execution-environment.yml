@@ -11,9 +11,11 @@ dependencies:
 
   galaxy:
     collections:
-      - name: https://${GITHUB_PUBLIC_NILASHISHC}@github.com/NilashishC/my_ns.my_col
+      - name: https://${AAP_EE_BUILDER_GITHUB_PUBLIC_NILASHISHC_TOKEN}@github.com/NilashishC/my_ns.my_col
         type: git
       - name: cisco.ios
+
+additional_build_steps:
 
 options:
   package_manager_path: /usr/bin/microdnf

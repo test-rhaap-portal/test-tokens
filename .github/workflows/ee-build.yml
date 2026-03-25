@@ -11,7 +11,7 @@
 #   Galaxy server tokens follow the Ansible naming convention:
 #     ANSIBLE_GALAXY_SERVER_<ID>_TOKEN
 #   where <ID> matches the [galaxy_server.<id>] section in ansible.cfg.
-#   GITHUB_PUBLIC_ANSIBLE_COLLECTIONS_TOKEN
+#   AAP_EE_BUILDER_GITHUB_PUBLIC_NILASHISHC_TOKEN
 #   REGISTRY_USERNAME/PASSWORD   - Container registry credentials
 #   REDHAT_REGISTRY_PASSWORD     - Red Hat registry for base images
 #
@@ -100,15 +100,15 @@ jobs:
         id: check-git-token
         env:
 
-          GITHUB_PUBLIC_ANSIBLE_COLLECTIONS_TOKEN: ${{ secrets.GITHUB_PUBLIC_ANSIBLE_COLLECTIONS_TOKEN }}
+          AAP_EE_BUILDER_GITHUB_PUBLIC_NILASHISHC_TOKEN: ${{ secrets.AAP_EE_BUILDER_GITHUB_PUBLIC_NILASHISHC_TOKEN }}
         run: |
           CONFIGURED=false
 
-          if [[ -n "$GITHUB_PUBLIC_ANSIBLE_COLLECTIONS_TOKEN" ]]; then
-            echo "::notice::GITHUB_PUBLIC_ANSIBLE_COLLECTIONS_TOKEN is configured"
+          if [[ -n "$AAP_EE_BUILDER_GITHUB_PUBLIC_NILASHISHC_TOKEN" ]]; then
+            echo "::notice::AAP_EE_BUILDER_GITHUB_PUBLIC_NILASHISHC_TOKEN is configured"
             CONFIGURED=true
           else
-            echo "::notice::No GITHUB_PUBLIC_ANSIBLE_COLLECTIONS_TOKEN secret configured"
+            echo "::notice::No AAP_EE_BUILDER_GITHUB_PUBLIC_NILASHISHC_TOKEN secret configured"
           fi
           echo "configured=$CONFIGURED" >> "$GITHUB_OUTPUT"
 
@@ -244,7 +244,7 @@ jobs:
         id: build
         env:
 
-          GITHUB_PUBLIC_ANSIBLE_COLLECTIONS_TOKEN: ${{ secrets.GITHUB_PUBLIC_ANSIBLE_COLLECTIONS_TOKEN }}
+          AAP_EE_BUILDER_GITHUB_PUBLIC_NILASHISHC_TOKEN: ${{ secrets.AAP_EE_BUILDER_GITHUB_PUBLIC_NILASHISHC_TOKEN }}
           # Use the repo's ansible.cfg for host-side dependency resolution
           ANSIBLE_CONFIG: ./ansible.cfg
         run: |
@@ -263,12 +263,12 @@ jobs:
             exit 1
           fi
           if [[ -f context/_build/requirements.yml ]]; then
-            envsubst '$GITHUB_PUBLIC_ANSIBLE_COLLECTIONS_TOKEN' \
+            envsubst '$AAP_EE_BUILDER_GITHUB_PUBLIC_NILASHISHC_TOKEN' \
               < context/_build/requirements.yml > /tmp/req-resolved.yml
             cp /tmp/req-resolved.yml context/_build/requirements.yml
           else
             echo "::error::SCM token variables are configured but context/_build/requirements.yml was not found after ansible-builder create."
-            echo "SCM token variables expected for substitution: GITHUB_PUBLIC_ANSIBLE_COLLECTIONS_TOKEN"
+            echo "SCM token variables expected for substitution: AAP_EE_BUILDER_GITHUB_PUBLIC_NILASHISHC_TOKEN"
             exit 1
           fi
 
