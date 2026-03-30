@@ -39,22 +39,22 @@ on:
       ee_file_name:
         description: "EE definition file name"
         required: false
-        default: "infra-ee.yml"
+        default: "execution-environment.yml"
         type: string
       ee_registry:
         description: "Container registry"
         required: false
-        default: "13.222.213.23"
+        default: "ghcr.io"
         type: string
       ee_image_name:
         description: "Container image name (defaults to repository name)"
         required: false
-        default: "infra-ee-x"
+        default: ""
         type: string
       registry_tls_verify:
         description: "Verify TLS certificates for container registries (true/false)"
         required: false
-        default: "false"
+        default: "true"
         type: string
       image_build_tag:
         description: "Custom image tag for the build (defaults to build-<commit SHA>)"
@@ -78,12 +78,12 @@ concurrency:
 
 env:
   # Container registry configuration (override via repository Variables)
-  REGISTRY: ${{ inputs.ee_registry || vars.EE_REGISTRY || '13.222.213.23' }}
+  REGISTRY: ${{ inputs.ee_registry || vars.EE_REGISTRY || 'ghcr.io' }}
   IMAGE_NAME: ${{ inputs.ee_image_name || vars.EE_IMAGE_NAME || github.repository }}
-  EE_REGISTRY_TLS_VERIFY: ${{ inputs.registry_tls_verify || vars.EE_REGISTRY_TLS_VERIFY || 'false' }}
+  EE_REGISTRY_TLS_VERIFY: ${{ inputs.registry_tls_verify || vars.EE_REGISTRY_TLS_VERIFY || 'true' }}
   # EE directory and file name (override via workflow_dispatch inputs or repository Variables)
   EE_DIR: ${{ inputs.ee_dir || vars.EE_DIR || '.' }}
-  EE_FILE_NAME: ${{ inputs.ee_file_name || vars.EE_FILE_NAME || 'infra-ee.yml' }}
+  EE_FILE_NAME: ${{ inputs.ee_file_name || vars.EE_FILE_NAME || 'execution-environment.yml' }}
   # Image build tag (override via workflow_dispatch input or repository Variable)
   IMAGE_BUILD_TAG: ${{ inputs.image_build_tag || vars.IMAGE_BUILD_TAG || format('build-{0}', github.sha) }}
   # Base image age thresholds (in days) - annotations only, never blocks the build

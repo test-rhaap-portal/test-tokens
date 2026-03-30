@@ -10,7 +10,7 @@ This is a sample execution environment project to build and publish your EE.
 │       └── ee-build.yml    # CI/CD workflow for building and publishing
 ├── .gitignore
 ├── README.md
-└── execution-environment.yml
+└── infra-ee.yml
 ```
 
 ## CI/CD Workflow Features
@@ -40,8 +40,6 @@ The included GitHub Actions workflow (`ee-build.yml`) provides:
 
 | Secret | Required | Description |
 |--------|----------|-------------|
-| `AAP_EE_BUILDER_GITHUB_PUBLIC_NILASHISHC_TOKEN` | Yes | Git access token for github.com |
-| `AAP_EE_BUILDER_GITHUB_PUBLIC_TEST_RHAAP_PORTAL` | Yes | Git access token for github.com |
 | `REGISTRY_USERNAME` | No | Container registry username (defaults to `github.actor`) |
 | `REGISTRY_PASSWORD` | No | Container registry password (defaults to `GITHUB_TOKEN`) |
 | `REDHAT_REGISTRY_PASSWORD` | No | Red Hat registry password (for pulling base images) |
@@ -50,11 +48,9 @@ The included GitHub Actions workflow (`ee-build.yml`) provides:
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `EE_REGISTRY` | `ghcr.io` | Container registry hostname |
+| `EE_REGISTRY` | `13.222.213.23` | Container registry hostname |
 | `EE_IMAGE_NAME` | `<owner>/<repo>` | Image name (GHCR requires the `owner/repo` namespace) |
 | `REDHAT_REGISTRY_USERNAME` | - | Red Hat registry username |
-
-See `NEXT_STEPS.md` for a complete setup checklist.
 
 ## Usage
 
@@ -65,7 +61,7 @@ See `NEXT_STEPS.md` for a complete setup checklist.
 pip install ansible-builder
 
 # Create build context
-ansible-builder create --file execution-environment.yml
+ansible-builder create --file infra-ee.yml
 
 # Build the image
 podman build -t my-ee:latest context/
@@ -79,7 +75,7 @@ podman build -t my-ee:latest context/
 
 ## Customization
 
-Edit `execution-environment.yml` to customize:
+Edit `infra-ee.yml` to customize:
 
 - Base image
 - Ansible collections

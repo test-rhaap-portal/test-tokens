@@ -28,11 +28,6 @@ The included GitHub Actions workflow (`ee-build.yml`) provides:
 - Fails if the base image is older than 80 days
 - Helps ensure your EE stays up-to-date with security patches
 
-### Galaxy Server Support
-
-- Supports authenticated Galaxy server access via token secrets
-- Falls back to public Galaxy if no token is configured
-
 ### Production Release Workflow
 
 - Automatic tagging on release
@@ -45,10 +40,6 @@ The included GitHub Actions workflow (`ee-build.yml`) provides:
 
 | Secret | Required | Description |
 |--------|----------|-------------|
-| `ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_PUBLISHED_TOKEN` | Yes | Galaxy server authentication token |
-| `ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_VALIDATED_TOKEN` | Yes | Galaxy server authentication token |
-| `AAP_EE_BUILDER_GITHUB_PUBLIC_NILASHISHC_TOKEN` | Yes | Git access token for github.com |
-| `AAP_EE_BUILDER_GITHUB_PUBLIC_TEST_RHAAP_PORTAL` | Yes | Git access token for github.com |
 | `REGISTRY_USERNAME` | No | Container registry username (defaults to `github.actor`) |
 | `REGISTRY_PASSWORD` | No | Container registry password (defaults to `GITHUB_TOKEN`) |
 | `REDHAT_REGISTRY_PASSWORD` | No | Red Hat registry password (for pulling base images) |
@@ -60,8 +51,6 @@ The included GitHub Actions workflow (`ee-build.yml`) provides:
 | `EE_REGISTRY` | `ghcr.io` | Container registry hostname |
 | `EE_IMAGE_NAME` | `<owner>/<repo>` | Image name (GHCR requires the `owner/repo` namespace) |
 | `REDHAT_REGISTRY_USERNAME` | - | Red Hat registry username |
-
-See `NEXT_STEPS.md` for a complete setup checklist.
 
 ## Usage
 
