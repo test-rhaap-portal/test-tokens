@@ -10,7 +10,7 @@ This is a sample execution environment project to build and publish your EE.
 │       └── ee-build.yml    # CI/CD workflow for building and publishing
 ├── .gitignore
 ├── README.md
-└── infra-ee.yml
+└── execution-environment.yml
 ```
 
 ## CI/CD Workflow Features
@@ -48,7 +48,7 @@ The included GitHub Actions workflow (`ee-build.yml`) provides:
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `EE_REGISTRY` | `13.222.213.23` | Container registry hostname |
+| `EE_REGISTRY` | `ghcr.io` | Container registry hostname |
 | `EE_IMAGE_NAME` | `<owner>/<repo>` | Image name (GHCR requires the `owner/repo` namespace) |
 | `REDHAT_REGISTRY_USERNAME` | - | Red Hat registry username |
 
@@ -61,7 +61,7 @@ The included GitHub Actions workflow (`ee-build.yml`) provides:
 pip install ansible-builder
 
 # Create build context
-ansible-builder create --file infra-ee.yml
+ansible-builder create --file execution-environment.yml
 
 # Build the image
 podman build -t my-ee:latest context/
@@ -75,7 +75,7 @@ podman build -t my-ee:latest context/
 
 ## Customization
 
-Edit `infra-ee.yml` to customize:
+Edit `execution-environment.yml` to customize:
 
 - Base image
 - Ansible collections
